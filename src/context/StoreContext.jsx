@@ -33,7 +33,7 @@ export const StoreProvider = ({ children }) => {
 
     // Ensure hero image exists
     if (!initialData.heroImage) {
-      initialData.heroImage = '/hero-laptop.png';
+      initialData.heroImage = '/hero.png';
     }
 
     return initialData;
