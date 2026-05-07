@@ -1,0 +1,593 @@
+{
+  "version": "1.1",
+  "categories": [
+    {
+      "id": "laptops",
+      "name": "Laptops"
+    },
+    {
+      "id": "cameras",
+      "name": "Cámaras CCTV"
+    }
+  ],
+  "products": [
+    {
+      "id": "KIT4DAHUAIP",
+      "title": "DAHUA KIT NVR1104HS-P-S3/H/4- HFW1230S1P-0360B-S5-QH2 - NUEVO - 4 CAMARAS BULLET 2MP + 1 GRABADOR",
+      "brand": "DAHUA",
+      "type": "IP",
+      "price": 976.47,
+      "image": "/catalogo/kit/kit 4 camaras Ip dahua.png",
+      "category": "cameras",
+      "details": {
+        "brand": "DAHUA",
+        "type": "IP",
+        "description": "DAHUA KIT NVR1104HS-P-S3/H/4- HFW1230S1P-0360B-S5-QH2 - NUEVO - 4 CAMARAS BULLET 2MP + 1 GRABADOR"
+      }
+    },
+    {
+      "id": "KIT2DAHUAIP",
+      "title": "DAHUA KIT-NVR4CH-2B-2D Kit Cámaras de Seguridad IP POE Full HD 2MP: NVR 4CH, 1 Cámaras Interior y 1 Cámaras Exterior",
+      "brand": "DAHUA",
+      "type": "IP",
+      "price": 705.88,
+      "image": "/catalogo/kit/kit 2 camaras Ip dahua.png",
+      "category": "cameras",
+      "details": {
+        "brand": "DAHUA",
+        "type": "IP",
+        "description": "DAHUA KIT-NVR4CH-2B-2D Kit Cámaras de Seguridad IP POE Full HD 2MP: NVR 4CH, 1 Cámaras Interior y 1 Cámaras Exterior"
+      }
+    },
+    {
+      "id": "KIT8DAHUAIP",
+      "title": "Kit de 8 Cámaras Dahua KIT-XVR8C8CH-1TB-I – Full HD, 8 Canales, Disco 1TB, Accesorios Incluidos",
+      "brand": "DAHUA",
+      "type": "IP",
+      "price": 1645.88,
+      "image": "/catalogo/kit/kit 8 camaras Ip dahua.png",
+      "category": "cameras",
+      "details": {
+        "brand": "DAHUA",
+        "type": "IP",
+        "description": "Kit de 8 Cámaras Dahua KIT-XVR8C8CH-1TB-I – Full HD, 8 Canales, Disco 1TB, Accesorios Incluidos"
+      }
+    },
+    {
+      "id": "KIT2DAHUAANALOGA",
+      "title": "KIT 2 CÁMARA SEGURIDAD DAHUA 13020602001 EXTERIOR FULL HD 1080P + DISCO 1 TB",
+      "brand": "DAHUA",
+      "type": "ANALOGA",
+      "price": 823.53,
+      "image": "/catalogo/kit/kit 2 camaras dahua.png",
+      "category": "cameras",
+      "details": {
+        "brand": "DAHUA",
+        "type": "ANALOGA",
+        "description": "KIT 2 CÁMARA SEGURIDAD DAHUA 13020602001 EXTERIOR FULL HD 1080P + DISCO 1 TB"
+      }
+    },
+    {
+      "id": "KIT4DAHUAANALOGA",
+      "title": "KIT 4 CÁMARA SEGURIDAD DAHUA 13020204027 FULL HD 1080P",
+      "brand": "DAHUA",
+      "type": "ANALOGA",
+      "price": 941.18,
+      "image": "/catalogo/kit/kit 4 camaras dahua.png",
+      "category": "cameras",
+      "details": {
+        "brand": "DAHUA",
+        "type": "ANALOGA",
+        "description": "KIT 4 CÁMARA SEGURIDAD DAHUA 13020204027 FULL HD 1080P"
+      }
+    },
+    {
+      "id": "KIT8DAHUAANALOGA",
+      "title": "CÁMARAS SEGURIDAD KIT 8 FULL HD 1080P CON AUDIO INCORPORADO 1TB",
+      "brand": "DAHUA",
+      "type": "ANALOGA",
+      "price": 1382.35,
+      "image": "/catalogo/kit/kit 8 camaras dahua.png",
+      "category": "cameras",
+      "details": {
+        "brand": "DAHUA",
+        "type": "ANALOGA",
+        "description": "CÁMARAS SEGURIDAD KIT 8 FULL HD 1080P CON AUDIO INCORPORADO 1TB"
+      }
+    },
+    {
+      "id": "KIT2HIKVISIONIP",
+      "title": "Kit 2 Cámaras Seguridad IP 4 Megapixeles con Audio Vision Nocturna a Colores y POE Hikvision KITIP2_4MP",
+      "brand": "HIKVISION",
+      "type": "IP",
+      "price": 1070.59,
+      "image": "/catalogo/kit/kit 2 camaras ip hikvision.png",
+      "category": "cameras",
+      "details": {
+        "brand": "HIKVISION",
+        "type": "IP",
+        "description": "Kit 2 Cámaras Seguridad IP 4 Megapixeles con Audio Vision Nocturna a Colores y POE Hikvision KITIP2_4MP"
+      }
+    },
+    {
+      "id": "KIT8HIKVISIONIP",
+      "title": "Kit 8 Cámaras Seguridad IP 2 Megapixeles con Audio Vision Nocturna a Colores y POE Hikvision KITIP8_2MP",
+      "brand": "HIKVISION",
+      "type": "IP",
+      "price": 2658.82,
+      "image": "/catalogo/kit/kit 8 camaras ip hikvision.png",
+      "category": "cameras",
+      "details": {
+        "brand": "HIKVISION",
+        "type": "IP",
+        "description": "Kit 8 Cámaras Seguridad IP 2 Megapixeles con Audio Vision Nocturna a Colores y POE Hikvision KITIP8_2MP"
+      }
+    },
+    {
+      "id": "KIT4HIKVISIONIP",
+      "title": "Kit 4 Cámaras Seguridad IP 2 Megapixeles con Audio Vision Nocturna a Colores y POE",
+      "brand": "HIKVISION",
+      "type": "IP",
+      "price": 1470.59,
+      "image": "/catalogo/kit/kit 4 camaras ip hikvision.png",
+      "category": "cameras",
+      "details": {
+        "brand": "HIKVISION",
+        "type": "IP",
+        "description": "Kit 4 Cámaras Seguridad IP 2 Megapixeles con Audio Vision Nocturna a Colores y POE"
+      }
+    },
+    {
+      "id": "KIT4HIKVISIONWIFID",
+      "title": "Kit 4 Cámaras Domo interior IP WIFI Hikvision NK844WDH 4 Megapixeles con Audio NVR 8 canales",
+      "brand": "HIKVISION",
+      "type": "WIFI",
+      "price": 1681.18,
+      "image": "/catalogo/kit/kit 4 camaras hikvision domo.png",
+      "category": "cameras",
+      "details": {
+        "brand": "HIKVISION",
+        "type": "WIFI",
+        "description": "Kit 4 Cámaras Domo interior IP WIFI Hikvision NK844WDH 4 Megapixeles con Audio NVR 8 canales"
+      }
+    },
+    {
+      "id": "KIT4HIKVISIONWIFIT",
+      "title": "Kit 4 Cámaras Tubo exterior IP WIFI Hikvision NK844WBH 4 Megapixeles con Audio NVR de 8 canales",
+      "brand": "HIKVISION",
+      "type": "WIFI",
+      "price": 1164.71,
+      "image": "/catalogo/kit/kit 4 camaras wifi hikvision.png",
+      "category": "cameras",
+      "details": {
+        "brand": "HIKVISION",
+        "type": "WIFI",
+        "description": "Kit 4 Cámaras Tubo exterior IP WIFI Hikvision NK844WBH 4 Megapixeles con Audio NVR de 8 canales"
+      }
+    },
+    {
+      "id": "KIT2HIKVISIONWIFIT",
+      "title": "Kit  2 Camaras Bala para Exterior con Lente 2.8mm y Dual Light Inalámbrico 4 Megapíxel / NVS 4ch /",
+      "brand": "HIKVISION",
+      "type": "WIFI",
+      "price": 588.24,
+      "image": "/catalogo/kit/kit 2 camaras wifi hikvision.png",
+      "category": "cameras",
+      "details": {
+        "brand": "HIKVISION",
+        "type": "WIFI",
+        "description": "Kit  2 Camaras Bala para Exterior con Lente 2.8mm y Dual Light Inalámbrico 4 Megapíxel / NVS 4ch /"
+      }
+    },
+    {
+      "id": "KIT2HIKVISIONANALOGA",
+      "title": "Kit 2 Cámaras Full Hd con Audio y Luz híbrida inteligente Hikvision",
+      "brand": "HIKVISION",
+      "type": "ANALOGA",
+      "price": 929.41,
+      "image": "/catalogo/kit/kit 2 camaras hikvision.png",
+      "category": "cameras",
+      "details": {
+        "brand": "HIKVISION",
+        "type": "ANALOGA",
+        "description": "Kit 2 Cámaras Full Hd con Audio y Luz híbrida inteligente Hikvision"
+      }
+    },
+    {
+      "id": "KIT4HIKVISIONANALOGA",
+      "title": "Kit de 4 Cámaras Full Hd con Audio con Luz híbrida inteligente Hikvision",
+      "brand": "HIKVISION",
+      "type": "ANALOGA",
+      "price": 1270.59,
+      "image": "/catalogo/kit/kit4camarashikvision.png",
+      "category": "cameras",
+      "details": {
+        "brand": "HIKVISION",
+        "type": "ANALOGA",
+        "description": "Kit de 4 Cámaras Full Hd con Audio con Luz híbrida inteligente Hikvision"
+      }
+    },
+    {
+      "id": "KIT8HIKVISIONANALOGA",
+      "title": "Kit de 8 Cámaras Full Hd con Audio con Luz híbrida inteligente",
+      "brand": "HIKVISION",
+      "type": "ANALOGA",
+      "price": 2235.29,
+      "image": "/catalogo/kit/kit 8 camaras hikvision.png",
+      "category": "cameras",
+      "details": {
+        "brand": "HIKVISION",
+        "type": "ANALOGA",
+        "description": "Kit de 8 Cámaras Full Hd con Audio con Luz híbrida inteligente"
+      }
+    },
+    {
+      "id": "0125-S",
+      "title": "HP I3 8 GB 256 GB",
+      "brand": "HP",
+      "range": "ECONOMICA",
+      "price": 1318.8,
+      "image": "/catalogo/laptops/imagenes/hp 25.png",
+      "category": "laptops",
+      "details": {
+        "brand": "HP",
+        "processor": "I3",
+        "gen": "12v",
+        "ram": "8 GB",
+        "ssd": "256 GB",
+        "graphics": "IRIS",
+        "range": "ECONOMICA"
+      }
+    },
+    {
+      "id": "0126-S",
+      "title": "HP I3 8 GB 512 GB",
+      "brand": "HP",
+      "range": "ECONOMICA",
+      "price": 1438.8,
+      "image": "/catalogo/laptops/imagenes/hp 26.png",
+      "category": "laptops",
+      "details": {
+        "brand": "HP",
+        "processor": "I3",
+        "gen": "12v",
+        "ram": "8 GB",
+        "ssd": "512 GB",
+        "graphics": "IRIS",
+        "range": "ECONOMICA"
+      }
+    },
+    {
+      "id": "0127-S",
+      "title": "HP I5 8 GB 512 GB",
+      "brand": "HP",
+      "range": "MEDIO",
+      "price": 1678.8,
+      "image": "/catalogo/laptops/imagenes/hp 27.png",
+      "category": "laptops",
+      "details": {
+        "brand": "HP",
+        "processor": "I5",
+        "gen": "12v",
+        "ram": "8 GB",
+        "ssd": "512 GB",
+        "graphics": "IRIS",
+        "range": "MEDIO"
+      }
+    },
+    {
+      "id": "0128-S",
+      "title": "HP I5 16 GB 512 GB",
+      "brand": "HP",
+      "range": "MEDIO",
+      "price": 1858.8,
+      "image": "/catalogo/laptops/imagenes/hp 28.png",
+      "category": "laptops",
+      "details": {
+        "brand": "HP",
+        "processor": "I5",
+        "gen": "12v",
+        "ram": "16 GB",
+        "ssd": "512 GB",
+        "graphics": "IRIS",
+        "range": "MEDIO"
+      }
+    },
+    {
+      "id": "0104-S",
+      "title": "LENOVO I3 8 GB 256 GB",
+      "brand": "LENOVO",
+      "range": "ECONOMICA",
+      "price": 1263.85,
+      "image": "/catalogo/laptops/imagenes/LENOVO 04.png",
+      "category": "laptops",
+      "details": {
+        "brand": "LENOVO",
+        "processor": "I3",
+        "gen": "12v",
+        "ram": "8 GB",
+        "ssd": "256 GB",
+        "graphics": "IRIS",
+        "range": "ECONOMICA"
+      }
+    },
+    {
+      "id": "0108-S",
+      "title": "LENOVO I5 8 GB 512 GB",
+      "brand": "LENOVO",
+      "range": "MEDIO",
+      "price": 1723.85,
+      "image": "/catalogo/laptops/imagenes/LENOVO 08.png",
+      "category": "laptops",
+      "details": {
+        "brand": "LENOVO",
+        "processor": "I5",
+        "gen": "13V",
+        "ram": "8 GB",
+        "ssd": "512 GB",
+        "graphics": "IRIS",
+        "range": "MEDIO"
+      }
+    },
+    {
+      "id": "0109-S",
+      "title": "LENOVO I5 16 GB 512 GB",
+      "brand": "LENOVO",
+      "range": "MEDIO",
+      "price": 1896.35,
+      "image": "/catalogo/laptops/imagenes/LENOVO 09.png",
+      "category": "laptops",
+      "details": {
+        "brand": "LENOVO",
+        "processor": "I5",
+        "gen": "13V",
+        "ram": "16 GB",
+        "ssd": "512 GB",
+        "graphics": "IRIS",
+        "range": "MEDIO"
+      }
+    },
+    {
+      "id": "0114-S",
+      "title": "LENOVO I7 16 GB 512 GB",
+      "brand": "LENOVO",
+      "range": "ALTA",
+      "price": 2241.35,
+      "image": "/catalogo/laptops/imagenes/LENOVO 14.png",
+      "category": "laptops",
+      "details": {
+        "brand": "LENOVO",
+        "processor": "I7",
+        "gen": "12v",
+        "ram": "16 GB",
+        "ssd": "512 GB",
+        "graphics": "IRIS",
+        "range": "ALTA"
+      }
+    },
+    {
+      "id": "0115-S",
+      "title": "LENOVO I7 16 GB 512 GB",
+      "brand": "LENOVO",
+      "range": "ALTA",
+      "price": 2398.8,
+      "image": "/catalogo/laptops/imagenes/LENOVO 15.png",
+      "category": "laptops",
+      "details": {
+        "brand": "LENOVO",
+        "processor": "I7",
+        "gen": "12v",
+        "ram": "16 GB",
+        "ssd": "512 GB",
+        "graphics": "NVIDIA",
+        "range": "ALTA"
+      }
+    },
+    {
+      "id": "0116-S",
+      "title": "LENOVO I7 16 GB 1TB",
+      "brand": "LENOVO",
+      "range": "ALTA",
+      "price": 2518.8,
+      "image": "/catalogo/laptops/imagenes/LENOVO 16.png",
+      "category": "laptops",
+      "details": {
+        "brand": "LENOVO",
+        "processor": "I7",
+        "gen": "12v",
+        "ram": "16 GB",
+        "ssd": "1TB",
+        "graphics": "NVIDIA",
+        "range": "ALTA"
+      }
+    },
+    {
+      "id": "0160-S",
+      "title": "ASUS I7 16 GB 512 GB",
+      "brand": "ASUS",
+      "range": "ALTA",
+      "price": 2413.85,
+      "image": "/catalogo/laptops/imagenes/ASUS 60.png",
+      "category": "laptops",
+      "details": {
+        "brand": "ASUS",
+        "processor": "I7",
+        "gen": "13V",
+        "ram": "16 GB",
+        "ssd": "512 GB",
+        "graphics": "NVIDIA",
+        "range": "ALTA"
+      }
+    },
+    {
+      "id": "0154-S",
+      "title": "ASUS I5 16 GB 512 GB",
+      "brand": "ASUS",
+      "range": "MEDIO",
+      "price": 1953.85,
+      "image": "/catalogo/laptops/imagenes/ASUS 54.png",
+      "category": "laptops",
+      "details": {
+        "brand": "ASUS",
+        "processor": "I5",
+        "gen": "13V",
+        "ram": "16 GB",
+        "ssd": "512 GB",
+        "graphics": "NVIDIA",
+        "range": "MEDIO"
+      }
+    },
+    {
+      "id": "0149-S",
+      "title": "ASUS I5 8 GB 512 GB",
+      "brand": "ASUS",
+      "range": "ECONOMICA",
+      "price": 1608.85,
+      "image": "/catalogo/laptops/imagenes/ASUS 49.png",
+      "category": "laptops",
+      "details": {
+        "brand": "ASUS",
+        "processor": "I5",
+        "gen": "12v",
+        "ram": "8 GB",
+        "ssd": "512 GB",
+        "graphics": "IRIS",
+        "range": "ECONOMICA"
+      }
+    },
+    {
+      "id": "0148-S",
+      "title": "ASUS I5 8 GB 512 GB",
+      "brand": "ASUS",
+      "range": "ECONOMICA",
+      "price": 1378.85,
+      "image": "/catalogo/laptops/imagenes/ASUS 48.png",
+      "category": "laptops",
+      "details": {
+        "brand": "ASUS",
+        "processor": "I5",
+        "gen": "13V",
+        "ram": "8 GB",
+        "ssd": "512 GB",
+        "graphics": "IRIS",
+        "range": "ECONOMICA"
+      }
+    },
+    {
+      "id": "G0005-S",
+      "title": "ASUS I5 16 GB 512 GB",
+      "brand": "ASUS",
+      "range": "ALTA",
+      "price": 3391.35,
+      "image": "/catalogo/laptops/imagenes/ASUS G5.png",
+      "category": "laptops",
+      "details": {
+        "brand": "ASUS",
+        "processor": "I5",
+        "gen": "13V",
+        "ram": "16 GB",
+        "ssd": "512 GB",
+        "graphics": "NVIDIA",
+        "range": "ALTA"
+      }
+    },
+    {
+      "id": "G0006-S",
+      "title": "ASUS I7 16 GB 512 GB",
+      "brand": "ASUS",
+      "range": "ALTA",
+      "price": 3736.35,
+      "image": "/catalogo/laptops/imagenes/ASUS G6.png",
+      "category": "laptops",
+      "details": {
+        "brand": "ASUS",
+        "processor": "I7",
+        "gen": "13V",
+        "ram": "16 GB",
+        "ssd": "512 GB",
+        "graphics": "NVIDIA",
+        "range": "ALTA"
+      }
+    },
+    {
+      "id": "G0007-S",
+      "title": "ASUS I7 16 GB 1TB",
+      "brand": "ASUS",
+      "range": "ALTA",
+      "price": 4828.85,
+      "image": "/catalogo/laptops/imagenes/ASUS G7.png",
+      "category": "laptops",
+      "details": {
+        "brand": "ASUS",
+        "processor": "I7",
+        "gen": "13V",
+        "ram": "16 GB",
+        "ssd": "1TB",
+        "graphics": "NVIDIA",
+        "range": "ALTA"
+      }
+    },
+    {
+      "id": "G0008-S",
+      "title": "HP I5 8 GB 512 GB",
+      "brand": "HP",
+      "range": "ALTA",
+      "price": 2643.85,
+      "image": "/catalogo/laptops/imagenes/HP G8.png",
+      "category": "laptops",
+      "details": {
+        "brand": "HP",
+        "processor": "I5",
+        "gen": "12v",
+        "ram": "8 GB",
+        "ssd": "512 GB",
+        "graphics": "NVIDIA",
+        "range": "ALTA"
+      }
+    },
+    {
+      "id": "G0009-S",
+      "title": "HP I7 16 GB 1TB",
+      "brand": "HP",
+      "range": "ALTA",
+      "price": 3851.35,
+      "image": "/catalogo/laptops/imagenes/HP G9.png",
+      "category": "laptops",
+      "details": {
+        "brand": "HP",
+        "processor": "I7",
+        "gen": "13V",
+        "ram": "16 GB",
+        "ssd": "1TB",
+        "graphics": "NVIDIA",
+        "range": "ALTA"
+      }
+    }
+  ],
+  "promotions": [
+    {
+      "id": "promo1",
+      "title": "Gran Oferta en Laptops",
+      "image": "/catalogo/laptops/imagenes/hp 25.png",
+      "active": true
+    },
+    {
+      "id": "promo2",
+      "title": "Seguridad Total",
+      "image": "/catalogo/kit/kit 4 camaras hikvision.png",
+      "active": true
+    },
+    {
+      "id": "promo3",
+      "title": "Equipos de Alta Gama",
+      "image": "/catalogo/laptops/imagenes/LENOVO 16.png",
+      "active": true
+    },
+    {
+      "id": "promo4",
+      "title": "Kits Autoinstalables",
+      "image": "/catalogo/kit/kit 2 camaras wifi hikvision.png",
+      "active": true
+    }
+  ]
+}
