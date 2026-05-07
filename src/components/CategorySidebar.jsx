@@ -40,21 +40,21 @@ const CategorySidebar = () => {
       <div className="filter-box">
         <h4 style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '1rem' }}>Filtrar</h4>
         
-        <div style={{ marginBottom: '1rem' }}>
+        <div style={{ marginBottom: '1.2rem' }}>
           <input 
             type="text" 
             placeholder="Buscar..."
             value={filters.search}
             onChange={(e) => handleFilterChange('search', e.target.value)}
-            style={{ width: '100%', padding: '0.6rem', border: '1px solid var(--border)', borderRadius: 'var(--radius)', fontSize: '0.8rem' }}
+            style={{ width: '100%', padding: '0.8rem', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '0.85rem' }}
           />
         </div>
 
-        <div style={{ marginBottom: '1rem' }}>
+        <div style={{ marginBottom: '1.2rem' }}>
           <select 
             value={filters.brand} 
             onChange={(e) => handleFilterChange('brand', e.target.value)}
-            style={{ width: '100%', padding: '0.6rem', border: '1px solid var(--border)', background: '#fff', fontSize: '0.8rem' }}
+            style={{ width: '100%', padding: '0.8rem', border: '1px solid var(--border)', background: '#fff', fontSize: '0.85rem', borderRadius: '8px' }}
           >
             <option value="all">Marca: Todas</option>
             {getBrands().map(brand => (
@@ -112,6 +112,13 @@ const CategorySidebar = () => {
           background: var(--primary) !important; 
           color: #000 !important; 
           font-weight: 800; 
+        }
+        .filter-box {
+          background: #fcfcfc;
+          padding: 1.5rem;
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          margin-bottom: 2rem;
         }
         
         @media (max-width: 1100px) {

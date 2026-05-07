@@ -7,13 +7,14 @@ const AdminPanel = () => {
     isAuthenticated, setIsAuthenticated,
     addCategory, updateCategory, deleteCategory,
     addBrand, updateBrand, deleteBrand,
-    updateProductPrice, addProduct, updateProduct, deleteProduct, updatePromotion,
-    updateAdminPassword, updateHeroImage
+    addProduct, updateProduct, deleteProduct, updatePromotion,
+    updateAdminPassword, updateHeroImage, uploadImage
   } = useStore();
 
   const [activeTab, setActiveTab] = useState('products');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   
   const [newCatName, setNewCatName] = useState('');
   const [newBrandName, setNewBrandName] = useState('');
@@ -25,8 +26,13 @@ const AdminPanel = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   
   const [newProduct, setNewProduct] = useState({
-    title: '', brand: data.brands[0]?.name || '', price: '', category: data.categories[0]?.id || 'laptops', image: '', details: { description: '' }
+    title: '', brand: '', price: '', category: 'laptops', image: '', details: { description: '' }
   });
+
+  // Local editing states to avoid re-renders during typing
+  const [editingCats, setEditingCats] = useState({});
+  const [editingBrands, setEditingBrands] = useState({});
+  const [editingPromos, setEditingPromos] = useState({});
 
   if (!isAdminOpen) return null;
 
@@ -83,7 +89,7 @@ const AdminPanel = () => {
       price: parseFloat(newProduct.price),
       details: { ...newProduct.details, brand: newProduct.brand }
     });
-    setNewProduct({ title: '', brand: data.brands[0]?.name || '', price: '', category: data.categories[0]?.id || 'laptops', image: '', details: { description: '' } });
+    setNewProduct({ title: '', brand: '', price: '', category: 'laptops', image: '', details: { description: '' } });
     setIsAddingProduct(false);
   };
 
@@ -93,24 +99,52 @@ const AdminPanel = () => {
     setEditingProduct(null);
   };
 
-  const handleImageUpload = (file, callback) => {
+  const handleImageUpload = async (file, folder, callback) => {
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => callback(reader.result);
-      reader.readAsDataURL(file);
+      try {
+        setIsUploading(true);
+        const publicUrl = await uploadImage(file, folder);
+        callback(publicUrl);
+      } catch (error) {
+        alert('Error al subir la imagen');
+      } finally {
+        setIsUploading(false);
+      }
+    }
+  };
+
+  const handleSaveCategory = async (id) => {
+    if (editingCats[id] !== undefined) {
+      await updateCategory(id, editingCats[id]);
+      const newEditing = { ...editingCats };
+      delete newEditing[id];
+      setEditingCats(newEditing);
+    }
+  };
+
+  const handleSaveBrand = async (id) => {
+    if (editingBrands[id] !== undefined) {
+      await updateBrand(id, editingBrands[id]);
+      const newEditing = { ...editingBrands };
+      delete newEditing[id];
+      setEditingBrands(newEditing);
+    }
+  };
+
+  const handleSavePromo = async (id) => {
+    if (editingPromos[id] !== undefined) {
+      const updates = { title: editingPromos[id] };
+      await updatePromotion(id, updates);
+      const newEditing = { ...editingPromos };
+      delete newEditing[id];
+      setEditingPromos(newEditing);
     }
   };
 
   return (
     <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      background: '#f4f7f6',
-      zIndex: 3000,
-      display: 'flex'
+      position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+      background: '#f4f7f6', zIndex: 3000, display: 'flex'
     }}>
       {/* Sidebar */}
       <aside style={{ width: '260px', background: 'var(--bg-dark)', color: 'white', display: 'flex', flexDirection: 'column' }}>
@@ -130,17 +164,11 @@ const AdminPanel = () => {
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               style={{
-                width: '100%',
-                padding: '1rem 2rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1rem',
-                background: activeTab === item.id ? '#222' : 'none',
-                border: 'none',
+                width: '100%', padding: '1rem 2rem', display: 'flex', alignItems: 'center', gap: '1rem',
+                background: activeTab === item.id ? '#222' : 'none', border: 'none',
                 color: activeTab === item.id ? 'var(--primary)' : 'white',
                 borderLeft: activeTab === item.id ? '4px solid var(--primary)' : '4px solid transparent',
-                cursor: 'pointer',
-                textAlign: 'left'
+                cursor: 'pointer', textAlign: 'left'
               }}
             >
               <span>{item.icon}</span> {item.label}
@@ -210,9 +238,11 @@ const AdminPanel = () => {
                     <label style={{ display: 'block', fontSize: '0.75rem', color: '#666', marginBottom: '0.5rem' }}>CARGAR IMAGEN (800x800px)</label>
                     <input 
                       type="file" accept="image/*"
-                      onChange={(e) => handleImageUpload(e.target.files[0], (res) => isAddingProduct ? setNewProduct({...newProduct, image: res}) : setEditingProduct({...editingProduct, image: res}))}
+                      disabled={isUploading}
+                      onChange={(e) => handleImageUpload(e.target.files[0], isAddingProduct ? (newProduct.category === 'cameras' ? 'kit' : 'laptops/imagenes') : (editingProduct.category === 'cameras' ? 'kit' : 'laptops/imagenes'), (res) => isAddingProduct ? setNewProduct({...newProduct, image: res}) : setEditingProduct({...editingProduct, image: res}))}
                     />
-                    {(isAddingProduct ? newProduct.image : editingProduct.image) && (
+                    {isUploading && <p style={{ fontSize: '0.7rem', color: 'var(--primary)', marginTop: '0.5rem' }}>⏳ Subiendo imagen a la nube...</p>}
+                    {(isAddingProduct ? newProduct.image : editingProduct.image) && !isUploading && (
                       <img src={isAddingProduct ? newProduct.image : editingProduct.image} style={{ height: '50px', marginTop: '0.5rem' }} />
                     )}
                   </div>
@@ -224,7 +254,7 @@ const AdminPanel = () => {
                     style={{ padding: '0.8rem', border: '1px solid #ddd', height: '120px' }} 
                   />
                 </div>
-                <div className="flex gap-2" style={{ marginTop: '2rem' }}>
+                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '2rem' }}>
                   <button type="button" onClick={() => { setIsAddingProduct(false); setEditingProduct(null); }} style={{ flex: 1, padding: '0.8rem', background: '#eee', border: 'none' }}>Cancelar</button>
                   <button type="submit" className="btn-primary" style={{ flex: 1 }}>{isAddingProduct ? 'Guardar Producto' : 'Actualizar Producto'}</button>
                 </div>
@@ -233,7 +263,7 @@ const AdminPanel = () => {
           )}
 
           {activeTab === 'dashboard' && (
-            <div className="grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem' }}>
               <div style={{ background: 'white', padding: '2rem', borderRadius: '8px', border: '1px solid #eee' }}>
                 <span style={{ color: '#888', fontSize: '0.8rem', fontWeight: 700 }}>PRODUCTOS</span>
                 <h3 style={{ fontSize: '2rem', fontWeight: 900 }}>{data.products.length}</h3>
@@ -299,7 +329,7 @@ const AdminPanel = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }}>
                <div style={{ background: 'white', padding: '2rem', borderRadius: '8px', border: '1px solid #eee', height: 'fit-content' }}>
                  <h4 style={{ marginBottom: '1.5rem' }}>Añadir Categoría</h4>
-                 <div className="flex gap-2">
+                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                    <input type="text" placeholder="Ej. Accesorios" value={newCatName} onChange={(e) => setNewCatName(e.target.value)} style={{ flex: 1, padding: '0.8rem', border: '1px solid #ddd', borderRadius: '4px' }} />
                    <button onClick={() => { if(newCatName) { addCategory(newCatName); setNewCatName(''); } }} className="btn-primary">Agregar</button>
                  </div>
@@ -311,10 +341,18 @@ const AdminPanel = () => {
                    {data.categories.map(cat => (
                      <div key={cat.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.8rem', background: '#fcfcfc', border: '1px solid #eee', alignItems: 'center' }}>
                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
-                         <span style={{ fontSize: '0.8rem' }}>✏️</span>
-                         <input value={cat.name} onChange={(e) => updateCategory(cat.id, e.target.value)} style={{ border: 'none', background: 'none', fontSize: '0.9rem', fontWeight: 600, width: '100%', padding: '0.2rem' }} />
+                         <input 
+                            value={editingCats[cat.id] !== undefined ? editingCats[cat.id] : cat.name} 
+                            onChange={(e) => setEditingCats({...editingCats, [cat.id]: e.target.value})} 
+                            style={{ border: 'none', background: 'none', fontSize: '0.9rem', fontWeight: 600, width: '100%', padding: '0.2rem', borderBottom: editingCats[cat.id] !== undefined ? '2px solid var(--primary)' : '2px solid transparent' }} 
+                         />
                        </div>
-                       <button onClick={() => { if(window.confirm('¿Eliminar categoría?')) deleteCategory(cat.id) }} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>🗑️</button>
+                       <div style={{ display: 'flex', gap: '0.5rem' }}>
+                         {editingCats[cat.id] !== undefined && (
+                           <button onClick={() => handleSaveCategory(cat.id)} style={{ background: 'var(--primary)', border: 'none', borderRadius: '4px', padding: '0.2rem 0.5rem', cursor: 'pointer', fontSize: '0.8rem' }}>💾</button>
+                         )}
+                         <button onClick={() => { if(window.confirm('¿Eliminar categoría?')) deleteCategory(cat.id) }} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>🗑️</button>
+                       </div>
                      </div>
                    ))}
                  </div>
@@ -326,7 +364,7 @@ const AdminPanel = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }}>
                <div style={{ background: 'white', padding: '2rem', borderRadius: '8px', border: '1px solid #eee', height: 'fit-content' }}>
                  <h4 style={{ marginBottom: '1.5rem' }}>Añadir Marca</h4>
-                 <div className="flex gap-2">
+                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                    <input type="text" placeholder="Ej. HP" value={newBrandName} onChange={(e) => setNewBrandName(e.target.value)} style={{ flex: 1, padding: '0.8rem', border: '1px solid #ddd', borderRadius: '4px' }} />
                    <button onClick={() => { if(newBrandName) { addBrand(newBrandName); setNewBrandName(''); } }} className="btn-primary">Agregar</button>
                  </div>
@@ -338,10 +376,18 @@ const AdminPanel = () => {
                    {data.brands.map(brand => (
                      <div key={brand.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.8rem', background: '#fcfcfc', border: '1px solid #eee', alignItems: 'center' }}>
                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
-                         <span style={{ fontSize: '0.8rem' }}>✏️</span>
-                         <input value={brand.name} onChange={(e) => updateBrand(brand.id, e.target.value)} style={{ border: 'none', background: 'none', fontSize: '0.9rem', fontWeight: 600, width: '100%', padding: '0.2rem' }} />
+                         <input 
+                            value={editingBrands[brand.id] !== undefined ? editingBrands[brand.id] : brand.name} 
+                            onChange={(e) => setEditingBrands({...editingBrands, [brand.id]: e.target.value})} 
+                            style={{ border: 'none', background: 'none', fontSize: '0.9rem', fontWeight: 600, width: '100%', padding: '0.2rem', borderBottom: editingBrands[brand.id] !== undefined ? '2px solid var(--primary)' : '2px solid transparent' }} 
+                         />
                        </div>
-                       <button onClick={() => { if(window.confirm('¿Eliminar marca?')) deleteBrand(brand.id) }} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>🗑️</button>
+                       <div style={{ display: 'flex', gap: '0.5rem' }}>
+                         {editingBrands[brand.id] !== undefined && (
+                           <button onClick={() => handleSaveBrand(brand.id)} style={{ background: 'var(--primary)', border: 'none', borderRadius: '4px', padding: '0.2rem 0.5rem', cursor: 'pointer', fontSize: '0.8rem' }}>💾</button>
+                         )}
+                         <button onClick={() => { if(window.confirm('¿Eliminar marca?')) deleteBrand(brand.id) }} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>🗑️</button>
+                       </div>
                      </div>
                    ))}
                  </div>
@@ -350,62 +396,47 @@ const AdminPanel = () => {
           )}
 
           {activeTab === 'promotions' && (
-            <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
                {data.promotions.map(promo => (
                  <div key={promo.id} style={{ background: 'white', padding: '1.5rem', borderRadius: '8px', border: '1px solid #eee' }}>
                    <div style={{ 
-                     height: '140px', 
-                     backgroundColor: '#fcfcfc',
+                     height: '140px', backgroundColor: '#fcfcfc',
                      backgroundImage: promo.image ? `url(${promo.image})` : 'none', 
-                     backgroundSize: 'contain',
-                     backgroundPosition: 'center',
-                     backgroundRepeat: 'no-repeat',
-                     borderRadius: '4px', 
-                     marginBottom: '1rem',
-                     display: 'flex',
-                     alignItems: 'center',
-                     justifyContent: 'center',
-                     border: '1px solid #eee'
+                     backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
+                     borderRadius: '4px', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee'
                    }}>
                      {!promo.image && <span style={{ color: '#ccc' }}>Sin Imagen</span>}
                    </div>
                    <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
                      <button 
-                        className="btn-outline" 
+                        className="btn-outline" disabled={isUploading}
                         style={{ fontSize: '0.75rem', padding: '0.5rem 1rem' }}
                         onClick={() => {
                           const input = document.createElement('input');
-                          input.type = 'file';
-                          input.accept = 'image/*';
-                          input.onchange = (e) => handleImageUpload(e.target.files[0], (res) => updatePromotion(promo.id, { image: res }));
+                          input.type = 'file'; input.accept = 'image/*';
+                          input.onchange = (e) => handleImageUpload(e.target.files[0], 'promociones', (res) => updatePromotion(promo.id, { image: res }));
                           input.click();
                         }}
                      >
-                       📷 Cambiar Imagen
+                       {isUploading ? '⌛ Subiendo...' : '📷 Cambiar Imagen'}
                      </button>
-                     <div style={{ fontSize: '0.6rem', color: '#999', marginTop: '0.5rem' }}>Recomendado: 1000x420px</div>
                    </div>
-                   <input 
-                     type="text" 
-                     value={promo.title} 
-                     onChange={(e) => updatePromotion(promo.id, { title: e.target.value })} 
-                     style={{ width: '100%', padding: '0.6rem', marginBottom: '1rem', border: '1px solid #ddd', borderRadius: '4px', fontWeight: 600 }} 
-                   />
+                   <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                     <input 
+                       type="text" 
+                       value={editingPromos[promo.id] !== undefined ? editingPromos[promo.id] : promo.title} 
+                       onChange={(e) => setEditingPromos({...editingPromos, [promo.id]: e.target.value})} 
+                       style={{ flex: 1, padding: '0.6rem', border: '1px solid #ddd', borderRadius: '4px', fontWeight: 600 }} 
+                     />
+                     {editingPromos[promo.id] !== undefined && (
+                        <button onClick={() => handleSavePromo(promo.id)} style={{ background: 'var(--primary)', border: 'none', borderRadius: '4px', padding: '0.5rem', cursor: 'pointer' }}>💾</button>
+                     )}
+                   </div>
                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', fontSize: '0.85rem' }}>
-                      <input 
-                        type="checkbox" 
-                        checked={promo.active} 
-                        onChange={(e) => updatePromotion(promo.id, { active: e.target.checked })} 
-                      /> 
-                      Mostrar en Carrusel Web
+                      <input type="checkbox" checked={promo.active} onChange={(e) => updatePromotion(promo.id, { active: e.target.checked })} /> Mostrar en Carrusel Web
                    </label>
                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', fontSize: '0.85rem', marginTop: '0.5rem' }}>
-                      <input 
-                        type="checkbox" 
-                        checked={promo.showDiscount} 
-                        onChange={(e) => updatePromotion(promo.id, { showDiscount: e.target.checked })} 
-                      /> 
-                      Mostrar etiqueta "10% OFF"
+                      <input type="checkbox" checked={promo.showDiscount} onChange={(e) => updatePromotion(promo.id, { showDiscount: e.target.checked })} /> Mostrar etiqueta "10% OFF"
                    </label>
                  </div>
                ))}
@@ -417,30 +448,21 @@ const AdminPanel = () => {
                <div style={{ background: 'white', padding: '2rem', borderRadius: '8px', border: '1px solid #eee' }}>
                  <h4 style={{ marginBottom: '1.5rem' }}>Imagen de Portada (Hero)</h4>
                  <div style={{ 
-                   width: '100%', 
-                   height: '200px', 
+                   width: '100%', height: '200px', 
                    background: `url(${data.heroImage}) center/contain no-repeat`,
-                   backgroundColor: '#f9f9f9',
-                   borderRadius: '8px',
-                   marginBottom: '1rem',
-                   border: '1px solid #eee'
+                   backgroundColor: '#f9f9f9', borderRadius: '8px', marginBottom: '1rem', border: '1px solid #eee'
                  }}></div>
                  <button 
-                    className="btn-primary" 
-                    style={{ width: '100%' }}
+                    className="btn-primary" disabled={isUploading} style={{ width: '100%' }}
                     onClick={() => {
                       const input = document.createElement('input');
-                      input.type = 'file';
-                      input.accept = 'image/*';
-                      input.onchange = (e) => handleImageUpload(e.target.files[0], (res) => updateHeroImage(res));
+                      input.type = 'file'; input.accept = 'image/*';
+                      input.onchange = (e) => handleImageUpload(e.target.files[0], 'otros', (res) => updateHeroImage(res));
                       input.click();
                     }}
                  >
-                   📸 Cambiar Imagen de Portada
+                   {isUploading ? '⌛ Subiendo Portada...' : '📸 Cambiar Imagen de Portada'}
                  </button>
-                 <p style={{ fontSize: '0.7rem', color: '#888', marginTop: '0.8rem', textAlign: 'center' }}>
-                   Esta es la imagen principal que aparece junto al título de la web.
-                 </p>
                </div>
 
                <div style={{ background: 'white', padding: '2rem', borderRadius: '8px', border: '1px solid #eee' }}>
@@ -448,19 +470,10 @@ const AdminPanel = () => {
                  <div style={{ marginBottom: '1.5rem' }}>
                    <label style={{ display: 'block', fontSize: '0.85rem', color: '#666', marginBottom: '0.5rem' }}>Nueva Contraseña Administrativa</label>
                    <input 
-                    type="text" 
-                    placeholder="Escribe la nueva contraseña" 
-                    defaultValue={data.adminPassword}
-                    onBlur={(e) => {
-                      if(e.target.value && window.confirm('¿Cambiar la contraseña de acceso?')) {
-                        updateAdminPassword(e.target.value);
-                      }
-                    }} 
+                    type="text" placeholder="Escribe la nueva contraseña" defaultValue={data.adminPassword}
+                    onBlur={(e) => { if(e.target.value && window.confirm('¿Cambiar la contraseña?')) updateAdminPassword(e.target.value); }} 
                     style={{ width: '100%', padding: '0.8rem', border: '1px solid #ddd', borderRadius: '4px' }} 
                    />
-                   <p style={{ fontSize: '0.75rem', color: '#888', marginTop: '0.8rem' }}>
-                     * La contraseña se aplicará la próxima vez que inicies sesión.
-                   </p>
                  </div>
                </div>
             </div>
