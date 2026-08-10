@@ -88,6 +88,7 @@ export const StoreProvider = ({ children }) => {
   const saveQuoteDetails = async (det) => { await orderService.saveQuoteDetails(det); await fetchQuoteDetails(); };
   const deleteQuote = async (id) => { await orderService.deleteQuote(id); await fetchQuotes(); };
   const updateQuote = async (id, upd) => { await orderService.updateQuote(id, upd); await fetchQuotes(); };
+  const saveQuoteItems = async (ref, items) => { await orderService.saveQuoteItems(ref, items); await fetchQuotes(); await fetchOrders(); };
 
   return (
     <StoreContext.Provider value={{ 
@@ -98,7 +99,7 @@ export const StoreProvider = ({ children }) => {
       deleteOrder, updateOrder, quotes, fetchQuotes, quoteDetails, fetchQuoteDetails, registerQuote, saveQuoteDetails, deleteQuote, 
       updateQuote, addGalleryImage, deleteGalleryImage, viewingImage, setViewingImage,
       cart, addToCart, removeFromCart, updateCartQty, clearCart,
-      getQuoteItems: orderService.getQuoteItems
+      getQuoteItems: orderService.getQuoteItems, saveQuoteItems
     }}>
       {children}
     </StoreContext.Provider>

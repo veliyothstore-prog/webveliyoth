@@ -15,7 +15,7 @@ const AdminPanel = () => {
     fetchOrders, deleteQuote, updateQuote, addOrder, updateOrder,
     deleteOrder, isAdminOpen, setIsAdminOpen, isAuthenticated, login,
     addGalleryImage, deleteGalleryImage, updateStoreConfig, updatePromotion,
-    getQuoteItems, addCategory, deleteCategory, addBrand, deleteBrand
+    getQuoteItems, addCategory, deleteCategory, addBrand, deleteBrand, saveQuoteItems
   } = useStore();
 
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -954,41 +954,113 @@ const AdminPanel = () => {
       {/* Modal de Detalles de Cotización */}
       {isViewingItems && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.8)', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-          <div style={{ background: 'white', width: '100%', maxWidth: '800px', borderRadius: '15px', overflow: 'hidden', display: 'flex', flexDirection: 'column', maxHeight: '90vh' }}>
+          <div style={{ background: 'white', width: '100%', maxWidth: '900px', borderRadius: '15px', overflow: 'hidden', display: 'flex', flexDirection: 'column', maxHeight: '90vh' }}>
             <div style={{ padding: '1.5rem', background: '#1e293b', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3 style={{ margin: 0 }}>Detalle de Cotización: {currentRef}</h3>
+              <h3 style={{ margin: 0 }}>Editor de Cotización: {currentRef}</h3>
               <button onClick={() => { setIsViewingItems(false); setSelectedQuoteItems(null); }} style={{ background: 'none', border: 'none', color: 'white', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
             </div>
             <div style={{ padding: '1.5rem', overflowY: 'auto' }}>
               {loadingItems ? (
                 <div style={{ textAlign: 'center', padding: '2rem' }}>Cargando productos...</div>
               ) : (
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                  <thead>
-                    <tr style={{ borderBottom: '2px solid #f1f5f9', color: '#64748b', fontSize: '0.8rem', textAlign: 'left' }}>
-                      <th style={{ padding: '0.8rem' }}>PRODUCTO</th>
-                      <th style={{ padding: '0.8rem' }}>MARCA</th>
-                      <th style={{ padding: '0.8rem', textAlign: 'center' }}>CANT</th>
-                      <th style={{ padding: '0.8rem', textAlign: 'right' }}>PRECIO UNIT.</th>
-                      <th style={{ padding: '0.8rem', textAlign: 'right' }}>SUBTOTAL</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {selectedQuoteItems?.map((it, idx) => (
-                      <tr key={idx} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                        <td style={{ padding: '0.8rem', fontWeight: 700, fontSize: '0.85rem' }}>{it.product_title}</td>
-                        <td style={{ padding: '0.8rem', fontSize: '0.8rem' }}>{it.brand}</td>
-                        <td style={{ padding: '0.8rem', textAlign: 'center', fontWeight: 800 }}>{it.quantity}</td>
-                        <td style={{ padding: '0.8rem', textAlign: 'right' }}>S/ {Number(it.price).toFixed(2)}</td>
-                        <td style={{ padding: '0.8rem', textAlign: 'right', fontWeight: 800 }}>S/ {(Number(it.price) * Number(it.quantity)).toFixed(2)}</td>
+                <>
+                  <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+                    <button onClick={() => {
+                      setSelectedQuoteItems([...selectedQuoteItems, {
+                        id: 'CUSTOM-' + Date.now(),
+                        product_id: 'CUSTOM',
+                        product_title: 'Servicio / Material',
+                        brand: 'SERVICIO',
+                        price: 0,
+                        quantity: 1,
+                        reference: currentRef
+                      }]);
+                    }} style={{ background: 'var(--primary)', border: 'none', padding: '0.6rem 1rem', borderRadius: '4px', fontWeight: 800, cursor: 'pointer', fontSize: '0.8rem' }}>
+                      + AÑADIR ÍTEM MANUAL
+                    </button>
+                  </div>
+                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '2px solid #f1f5f9', color: '#64748b', fontSize: '0.8rem', textAlign: 'left' }}>
+                        <th style={{ padding: '0.8rem' }}>PRODUCTO / SERVICIO</th>
+                        <th style={{ padding: '0.8rem', width: '80px', textAlign: 'center' }}>CANT</th>
+                        <th style={{ padding: '0.8rem', width: '100px', textAlign: 'right' }}>P. UNIT.</th>
+                        <th style={{ padding: '0.8rem', width: '100px', textAlign: 'right' }}>SUBTOTAL</th>
+                        <th style={{ padding: '0.8rem', width: '50px', textAlign: 'center' }}></th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {selectedQuoteItems?.map((it, idx) => (
+                        <tr key={idx} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                          <td style={{ padding: '0.8rem' }}>
+                            <input 
+                              type="text" 
+                              value={it.product_title} 
+                              onChange={(e) => {
+                                const newItems = [...selectedQuoteItems];
+                                newItems[idx].product_title = e.target.value.toUpperCase();
+                                setSelectedQuoteItems(newItems);
+                              }}
+                              style={{ width: '100%', padding: '0.5rem', border: '1px solid #e2e8f0', borderRadius: '4px', fontWeight: 700, fontSize: '0.85rem' }}
+                            />
+                          </td>
+                          <td style={{ padding: '0.8rem', textAlign: 'center' }}>
+                            <input 
+                              type="number" 
+                              min="1"
+                              value={it.quantity} 
+                              onChange={(e) => {
+                                const newItems = [...selectedQuoteItems];
+                                newItems[idx].quantity = Math.max(1, parseInt(e.target.value) || 1);
+                                setSelectedQuoteItems(newItems);
+                              }}
+                              style={{ width: '60px', padding: '0.5rem', border: '1px solid #e2e8f0', borderRadius: '4px', textAlign: 'center', fontWeight: 800 }}
+                            />
+                          </td>
+                          <td style={{ padding: '0.8rem', textAlign: 'right' }}>
+                            <input 
+                              type="number" 
+                              step="0.01"
+                              value={it.price} 
+                              onChange={(e) => {
+                                const newItems = [...selectedQuoteItems];
+                                newItems[idx].price = parseFloat(e.target.value) || 0;
+                                setSelectedQuoteItems(newItems);
+                              }}
+                              style={{ width: '80px', padding: '0.5rem', border: '1px solid #e2e8f0', borderRadius: '4px', textAlign: 'right', fontWeight: 700 }}
+                            />
+                          </td>
+                          <td style={{ padding: '0.8rem', textAlign: 'right', fontWeight: 900, color: '#1e293b' }}>
+                            S/ {(Number(it.price) * Number(it.quantity)).toFixed(2)}
+                          </td>
+                          <td style={{ padding: '0.8rem', textAlign: 'center' }}>
+                            <button onClick={() => {
+                              setSelectedQuoteItems(selectedQuoteItems.filter((_, i) => i !== idx));
+                            }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', fontSize: '1.2rem' }}>🗑️</button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <div style={{ textAlign: 'right', padding: '1rem', fontSize: '1.2rem', fontWeight: 900, color: '#0f172a' }}>
+                    TOTAL: S/ {selectedQuoteItems?.reduce((acc, it) => acc + (Number(it.price) * Number(it.quantity)), 0).toFixed(2)}
+                  </div>
+                </>
               )}
             </div>
-            <div style={{ padding: '1.5rem', background: '#f8fafc', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'flex-end' }}>
-              <button onClick={() => { setIsViewingItems(false); setSelectedQuoteItems(null); }} style={{ padding: '0.6rem 1.5rem', borderRadius: '8px', border: 'none', background: '#1e293b', color: 'white', fontWeight: 800, cursor: 'pointer' }}>CERRAR</button>
+            <div style={{ padding: '1.5rem', background: '#f8fafc', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+              <button onClick={() => { setIsViewingItems(false); setSelectedQuoteItems(null); }} style={{ padding: '0.8rem 1.5rem', borderRadius: '8px', border: '1px solid #cbd5e1', background: 'white', color: '#475569', fontWeight: 800, cursor: 'pointer' }}>CANCELAR</button>
+              <button onClick={async () => {
+                toast.loading('Guardando cambios...', { id: 'save-items' });
+                try {
+                  await saveQuoteItems(currentRef, selectedQuoteItems);
+                  toast.success('Cotización actualizada', { id: 'save-items' });
+                  setIsViewingItems(false);
+                } catch (e) {
+                  console.error(e);
+                  toast.error('Error al guardar', { id: 'save-items' });
+                }
+              }} style={{ padding: '0.8rem 1.5rem', borderRadius: '8px', border: 'none', background: 'var(--primary)', color: 'black', fontWeight: 900, cursor: 'pointer' }}>GUARDAR Y RECALCULAR</button>
             </div>
           </div>
         </div>

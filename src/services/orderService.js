@@ -122,5 +122,35 @@ export const orderService = {
       .eq('reference', reference);
     if (error) throw error;
     return data;
+  },
+
+  saveQuoteItems: async (reference, items) => {
+    const total_price = Number(items.reduce((acc, i) => acc + (Number(i.price) * Number(i.quantity || 1)), 0).toFixed(2));
+    
+    // 1. Eliminar ítems anteriores
+    const { error: delError } = await supabase.from('cotizacion_items').delete().eq('reference', reference);
+    if (delError) throw delError;
+    
+    // 2. Insertar nuevos ítems
+    const quoteItems = items.map(item => ({
+        reference,
+        product_id: String(item.product_id),
+        product_title: item.product_title || item.title || '',
+        brand: item.brand || 'GENÉRICO',
+        price: Number(item.price),
+        quantity: Number(item.quantity || 1)
+    }));
+    
+    if (quoteItems.length > 0) {
+      const { error: insError } = await supabase.from('cotizacion_items').insert(quoteItems);
+      if (insError) throw insError;
+    }
+    
+    // 3. Actualizar el precio total en la cotización maestra
+    const { error: updError } = await supabase.from('cotizaciones').update({ price: total_price }).eq('reference', reference);
+    if (updError) throw updError;
+
+    // 4. Sincronizar el precio si ya existe en pedidos
+    await supabase.from('pedidos').update({ price: total_price }).eq('reference', reference);
   }
 };
