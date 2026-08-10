@@ -87,7 +87,7 @@ const PromoCarousel = () => {
 
             <div style={{ padding: '0.5rem 1.5rem 1.5rem', background: '#fff' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                {promo.showTag && (
+                {promo.showdiscount && (
                   <span style={{ background: '#ff4d4d', color: 'white', padding: '0.2rem 0.5rem', fontSize: '0.7rem', fontWeight: 900 }}>10% OFF</span>
                 )}
               </div>
