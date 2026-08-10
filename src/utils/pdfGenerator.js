@@ -97,7 +97,7 @@ export const generateProfessionalPDF = async (items, customerData, isPreview = f
     doc.roundedRect(140, tableFinalY + 10, 60, 25, 4, 4, 'F');
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(9);
-    doc.text('TOTAL A PAGAR (INC. IGV):', 145, tableFinalY + 18);
+    doc.text('TOTAL A PAGAR:', 145, tableFinalY + 18);
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
     doc.text(`S/ ${Number(total).toFixed(2)}`, 170, tableFinalY + 28, { align: 'center' });
@@ -109,12 +109,11 @@ export const generateProfessionalPDF = async (items, customerData, isPreview = f
     doc.text('CONDICIONES COMERCIALES:', 10, tableFinalY + 45);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
-    const conditions = [
-      '• Precios incluyen IGV.',
-      '• Validez de la oferta: 05 días calendario.',
-      '• Tiempo de entrega: Inmediato (Sujeto a stock).',
-      '• Garantía: 12 meses contra defectos de fábrica.',
-      '• Forma de pago: Contado / Transferencia.'
+    const conditions = customerData.commercialConditions ? customerData.commercialConditions.split('\n') : [
+      'Forma de pago: 70% de adelanto al aceptar la cotización y 30% al finalizar la instalación.',
+      'Plazo de entrega e instalación: Dentro de 2 días hábiles luego del adelanto.',
+      'Validez Proforma: 2 días calendario',
+      'Garantía: 12 meses por defecto de fábrica y 3 meses por instalación.'
     ];
     doc.text(conditions, 15, tableFinalY + 52);
 

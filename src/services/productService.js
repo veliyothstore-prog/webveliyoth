@@ -27,7 +27,8 @@ export const productService = {
       promotions: promotions || [],
       gallery: gallery || [],
       heroImage: storeConfig.heroImage || '/hero.png',
-      version: storeConfig.version || '1.5'
+      version: storeConfig.version || '1.5',
+      commercialConditions: storeConfig.commercialConditions || 'Forma de pago: 70% de adelanto al aceptar la cotización y 30% al finalizar la instalación.\nPlazo de entrega e instalación: Dentro de 2 días hábiles luego del adelanto.\nValidez Proforma: 2 días calendario\nGarantía: 12 meses por defecto de fábrica y 3 meses por instalación.'
     };
   },
 
@@ -109,8 +110,8 @@ export const productService = {
     if (error) throw error;
   },
 
-  updateHeroImage: async (newImage, version) => {
-    const { error } = await supabase.from('config').update({ value: { heroImage: newImage, version } }).eq('key', 'store_config');
+  updateStoreConfig: async (newConfig) => {
+    const { error } = await supabase.from('config').update({ value: newConfig }).eq('key', 'store_config');
     if (error) throw error;
   }
 };

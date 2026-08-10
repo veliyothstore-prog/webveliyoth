@@ -14,7 +14,7 @@ const AdminPanel = () => {
     logout, changePassword, admins, fetchAdmins, fetchQuotes,
     fetchOrders, deleteQuote, updateQuote, addOrder, updateOrder,
     deleteOrder, isAdminOpen, setIsAdminOpen, isAuthenticated, login,
-    addGalleryImage, deleteGalleryImage, updateHeroImage, updatePromotion,
+    addGalleryImage, deleteGalleryImage, updateStoreConfig, updatePromotion,
     getQuoteItems, addCategory, deleteCategory, addBrand, deleteBrand
   } = useStore();
 
@@ -80,7 +80,7 @@ const AdminPanel = () => {
     try {
       const url = await uploadImage(file, isHero ? 'config' : 'productos');
       if (isHero) {
-        await updateHeroImage(url);
+        await updateStoreConfig({ heroImage: url });
         toast.success('Portada actualizada');
       } else if (promoId) {
         await updatePromotion(promoId, { image: url });
@@ -532,7 +532,7 @@ const AdminPanel = () => {
                                     pdfItems = [{ ...ord, title: ord.product_title }];
                                   }
 
-                                  const blob = await generateProfessionalPDF(pdfItems, { name: info?.name, phone: info?.phone, reference: ord.reference, output: 'blob' });
+                                  const blob = await generateProfessionalPDF(pdfItems, { name: info?.name, phone: info?.phone, reference: ord.reference, commercialConditions: data.commercialConditions, output: 'blob' });
                                   if (blob) {
                                     setPreviewPdf(URL.createObjectURL(blob));
                                     toast.success('Listo', { id: 'pdf-ord' });
@@ -663,7 +663,7 @@ const AdminPanel = () => {
                                 <button onClick={async () => {
                                   toast.loading('Generando vista previa...', { id: 'pdf-prev' });
                                   const items = await getQuoteItems(q.reference);
-                                  const blob = await generateProfessionalPDF(items.map(it => ({ ...it, title: it.product_title })), { name: info?.name, phone: info?.phone, reference: q.reference, output: 'blob' });
+                                  const blob = await generateProfessionalPDF(items.map(it => ({ ...it, title: it.product_title })), { name: info?.name, phone: info?.phone, reference: q.reference, commercialConditions: data.commercialConditions, output: 'blob' });
                                   if (blob) {
                                     setPreviewPdf(URL.createObjectURL(blob));
                                     toast.success('Listo', { id: 'pdf-prev' });
@@ -752,7 +752,7 @@ const AdminPanel = () => {
                            <button onClick={() => handleViewItems(q)} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '0.4rem 0.8rem', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 800 }}>VER DETALLE 👁️</button>
                           <button onClick={async () => {
                             const items = await getQuoteItems(q.reference);
-                            generateProfessionalPDF(items.map(it => ({ ...it, title: it.product_title })), { name: info?.name, phone: info?.phone, reference: q.reference });
+                            generateProfessionalPDF(items.map(it => ({ ...it, title: it.product_title })), { name: info?.name, phone: info?.phone, reference: q.reference, commercialConditions: data.commercialConditions });
                           }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.1rem' }}>📄</button>
                           <button onClick={() => { if(window.confirm('¿Eliminar?')) deleteQuote(q.id).then(fetchQuotes) }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.1rem', color: '#cbd5e1' }}>🗑️</button>
                         </div>
@@ -826,7 +826,22 @@ const AdminPanel = () => {
           )}
 
           {activeTab === 'config' && (
-            <div style={{ maxWidth: '800px', margin: '0 auto' }}><div style={{ background: 'white', padding: isMobile ? '1.5rem' : '3rem', borderRadius: '12px', border: '1px solid #e2e8f0', textAlign: 'center' }}><h4 style={{ textAlign: 'left', fontWeight: 800, marginBottom: '2rem' }}>Imagen de Portada (Hero)</h4><div style={{ background: '#f8fafc', borderRadius: '12px', padding: isMobile ? '1rem' : '2rem', marginBottom: '2rem' }}><img src={data.heroImage} alt="Hero" style={{ maxWidth: '100%', borderRadius: '8px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }} /></div><label style={{ display: 'block', background: 'var(--primary)', color: 'black', padding: '1.2rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 900, fontSize: '1rem', textTransform: 'uppercase' }}>📷 CAMBIAR IMAGEN DE PORTADA<input type="file" hidden onChange={(e) => handleFileUpload(e, false, null, true)} /></label></div></div>
+            <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              <div style={{ background: 'white', padding: isMobile ? '1.5rem' : '3rem', borderRadius: '12px', border: '1px solid #e2e8f0', textAlign: 'center' }}>
+                <h4 style={{ textAlign: 'left', fontWeight: 800, marginBottom: '2rem' }}>Imagen de Portada (Hero)</h4>
+                <div style={{ background: '#f8fafc', borderRadius: '12px', padding: isMobile ? '1rem' : '2rem', marginBottom: '2rem' }}><img src={data.heroImage} alt="Hero" style={{ maxWidth: '100%', borderRadius: '8px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }} /></div>
+                <label style={{ display: 'block', background: 'var(--primary)', color: 'black', padding: '1.2rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 900, fontSize: '1rem', textTransform: 'uppercase' }}>📷 CAMBIAR IMAGEN DE PORTADA<input type="file" hidden onChange={(e) => handleFileUpload(e, false, null, true)} /></label>
+              </div>
+              <div style={{ background: 'white', padding: isMobile ? '1.5rem' : '3rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                <h4 style={{ textAlign: 'left', fontWeight: 800, marginBottom: '2rem' }}>Condiciones Comerciales (PDF)</h4>
+                <textarea 
+                  value={data.commercialConditions || ''} 
+                  onChange={(e) => updateStoreConfig({ commercialConditions: e.target.value })} 
+                  style={{ width: '100%', minHeight: '150px', padding: '1rem', borderRadius: '8px', border: '1px solid #e2e8f0', fontFamily: 'monospace', fontSize: '0.9rem' }} 
+                  placeholder="Ej: Forma de pago: 70% adelanto..."
+                />
+              </div>
+            </div>
           )}
         </div>
       </main>

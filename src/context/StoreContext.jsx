@@ -13,7 +13,7 @@ const StoreContext = createContext();
 export const StoreProvider = ({ children }) => {
   // ... state declarations ...
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState({ products: [], categories: [], brands: [], promotions: [], gallery: [], heroImage: '/hero.png', version: '1.5' });
+  const [data, setData] = useState({ products: [], categories: [], brands: [], promotions: [], gallery: [], heroImage: '/hero.png', version: '1.5', commercialConditions: '' });
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
@@ -75,7 +75,7 @@ export const StoreProvider = ({ children }) => {
   const updateBrand = async (id, n) => { await productService.updateBrand(id, n); setData(p => ({ ...p, brands: p.brands.map(b => b.id === id ? { ...b, name: n } : b) })); };
   const deleteBrand = async (id) => { await productService.deleteBrand(id); setData(p => ({ ...p, brands: p.brands.filter(b => b.id !== id) })); };
   const updatePromotion = async (id, upd) => { await productService.updatePromotion(id, upd); setData(p => ({ ...p, promotions: p.promotions.map(pr => pr.id === id ? { ...pr, ...upd } : pr) })); };
-  const updateHeroImage = async (img) => { await productService.updateHeroImage(img, data.version); setData(p => ({ ...p, heroImage: img })); };
+  const updateStoreConfig = async (newConfig) => { await productService.updateStoreConfig(newConfig); setData(p => ({ ...p, ...newConfig })); };
 
   // Order Wrappers
   const fetchOrders = async () => { setOrders(await orderService.fetchOrders()); };
@@ -94,7 +94,7 @@ export const StoreProvider = ({ children }) => {
       data, loading, user, login, logout, orders, fetchOrders, addOrder, uploadImage, activeCategory, setActiveCategory, 
       filters, setFilters, selectedProduct, setSelectedProduct, isAdminOpen, setIsAdminOpen, isAuthenticated, setIsAuthenticated, 
       updateProduct, addCategory, updateCategory, deleteCategory, addBrand, updateBrand, deleteBrand, addProduct, deleteProduct, 
-      updatePromotion, changePassword, updateHeroImage, admins, fetchAdmins, addAdmin, updateAdmin, signUpAdmin, deleteAdmin, 
+      updatePromotion, changePassword, updateStoreConfig, admins, fetchAdmins, addAdmin, updateAdmin, signUpAdmin, deleteAdmin, 
       deleteOrder, updateOrder, quotes, fetchQuotes, quoteDetails, fetchQuoteDetails, registerQuote, saveQuoteDetails, deleteQuote, 
       updateQuote, addGalleryImage, deleteGalleryImage, viewingImage, setViewingImage,
       cart, addToCart, removeFromCart, updateCartQty, clearCart,
