@@ -22,8 +22,8 @@ const MainContent = () => {
       <style>{`
         .main-layout {
           display: grid;
-          grid-template-columns: 260px 1fr 320px;
-          gap: 3rem;
+          grid-template-columns: 220px 1fr 260px;
+          gap: 2.5rem;
           align-items: start;
           width: 100%;
         }

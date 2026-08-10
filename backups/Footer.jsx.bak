@@ -1,0 +1,61 @@
+import React from 'react';
+import { useStore } from '../context/StoreContext';
+
+const Footer = () => {
+  const { data, setActiveCategory } = useStore();
+
+  return (
+    <footer style={{ background: 'white', padding: '5rem 0 2rem', borderTop: '1px solid #eee' }}>
+      <div className="container">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '4rem', marginBottom: '4rem' }}>
+          {/* Info de Marca */}
+          <div>
+            <img src="/logo.png" alt="Logo" style={{ height: '40px', marginBottom: '1.5rem', filter: 'grayscale(1) brightness(0.5)' }} />
+            <p style={{ color: '#666', fontSize: '0.9rem', lineHeight: '1.8' }}>
+              Expertos en seguridad electrónica y soluciones tecnológicas para hogares y empresas en todo el Perú.
+            </p>
+          </div>
+
+          {/* Categorías */}
+          <div>
+            <h4 style={{ fontSize: '0.8rem', fontWeight: 800, color: '#444', textTransform: 'uppercase', marginBottom: '2rem', letterSpacing: '2px' }}>Categorías</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <a href="#catalogo" onClick={() => setActiveCategory('all')} className="f-link">Catálogo Completo</a>
+              {data.categories.map(cat => (
+                <a key={cat.id} href="#catalogo" onClick={() => setActiveCategory(cat.id)} className="f-link">{cat.name}</a>
+              ))}
+            </div>
+          </div>
+
+          {/* Contacto */}
+          <div>
+            <h4 style={{ fontSize: '0.8rem', fontWeight: 800, color: '#444', textTransform: 'uppercase', marginBottom: '2rem', letterSpacing: '2px' }}>Contacto</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', color: '#666', fontSize: '0.9rem' }}>
+              <p>📍 Chiclayo, Lambayeque - Perú</p>
+              <p>📞 +51 936 424 026</p>
+              <p>✉️ ventas@veliyoth.com</p>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ borderTop: '1px solid #f5f5f5', paddingTop: '2rem', textAlign: 'center', color: '#999', fontSize: '0.8rem' }}>
+          <p>© {new Date().getFullYear()} VeliYoth Store. Todos los derechos reservados.</p>
+        </div>
+      </div>
+
+      <style>{`
+        .f-link {
+          color: #666;
+          text-decoration: none;
+          font-size: 0.9rem;
+          transition: color 0.3s;
+        }
+        .f-link:hover {
+          color: var(--primary);
+        }
+      `}</style>
+    </footer>
+  );
+};
+
+export default Footer;

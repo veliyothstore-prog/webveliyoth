@@ -43,22 +43,25 @@ const CategorySidebar = () => {
         <div style={{ marginBottom: '1.2rem' }}>
           <input 
             type="text" 
-            placeholder="Buscar..."
-            value={filters.search}
+            name="search-catalog"
+            autoComplete="off"
+            placeholder="Buscar producto..."
+            value={filters.search || ''}
             onChange={(e) => handleFilterChange('search', e.target.value)}
             style={{ width: '100%', padding: '0.8rem', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '0.85rem' }}
           />
         </div>
 
         <div style={{ marginBottom: '1.2rem' }}>
+          <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, color: '#64748b', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Marca</label>
           <select 
             value={filters.brand} 
             onChange={(e) => handleFilterChange('brand', e.target.value)}
-            style={{ width: '100%', padding: '0.8rem', border: '1px solid var(--border)', background: '#fff', fontSize: '0.85rem', borderRadius: '8px' }}
+            style={{ width: '100%', padding: '0.8rem', border: '1px solid var(--border)', background: '#fff', fontSize: '0.85rem', borderRadius: '8px', fontWeight: 600 }}
           >
-            <option value="all">Marca: Todas</option>
+            <option value="all">Todas</option>
             {getBrands().map(brand => (
-              <option key={brand} value={brand}>{brand}</option>
+              <option key={brand} value={brand}>{brand.toUpperCase()}</option>
             ))}
           </select>
         </div>
@@ -75,16 +78,50 @@ const CategorySidebar = () => {
       </div>
 
       <div className="support-card">
-        <h4 style={{ color: 'var(--primary)', marginBottom: '0.5rem', fontSize: '0.8rem' }}>Atención</h4>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1rem' }}>
+          <div style={{ width: '35px', height: '35px', background: 'rgba(37, 211, 102, 0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>
+            🟢
+          </div>
+          <div>
+            <h4 style={{ fontSize: '0.85rem', fontWeight: 800, margin: 0 }}>¿Necesitas ayuda?</h4>
+            <p style={{ fontSize: '0.7rem', color: '#888', margin: 0 }}>Asesoría personalizada</p>
+          </div>
+        </div>
         <button 
            onClick={() => window.open('https://wa.me/51936424026', '_blank')}
-           style={{ width: '100%', padding: '0.5rem', background: 'var(--primary)', border: 'none', fontWeight: 700, cursor: 'pointer', fontSize: '0.8rem' }}
+           className="sidebar-wa-btn"
         >
-           WhatsApp
+           CHATEAR AHORA
         </button>
       </div>
 
       <style>{`
+        .sidebar-wa-btn {
+          width: 100%;
+          padding: 0.8rem;
+          background: #25D366;
+          color: white;
+          border: none;
+          border-radius: 50px;
+          font-weight: 800;
+          font-size: 0.75rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+          letter-spacing: 0.05em;
+        }
+        .sidebar-wa-btn:hover {
+          background: #128C7E;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3);
+        }
+        .support-card {
+          background: white;
+          padding: 1.2rem;
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
         .sidebar-container { 
           position: sticky; 
           top: 100px; 

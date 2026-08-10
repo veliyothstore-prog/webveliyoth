@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useStore } from '../context/StoreContext';
 
 const PromoCarousel = () => {
-  const { data } = useStore();
+  const { data, setViewingImage } = useStore();
   const activePromos = data.promotions.filter(p => p.active);
   const [current, setCurrent] = useState(0);
 
@@ -21,7 +21,6 @@ const PromoCarousel = () => {
   };
 
   if (activePromos.length === 0) return null;
-
   return (
     <aside style={{ width: '100%', position: 'sticky', top: '100px' }}>
       <div style={{
@@ -49,16 +48,20 @@ const PromoCarousel = () => {
               zIndex: index === current ? 1 : 0
             }}
           >
-            <div style={{
-              flex: 1,
-              backgroundImage: `url(${promo.image})`,
-              backgroundSize: 'contain',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-              backgroundOrigin: 'content-box',
-              padding: '1rem',
-              backgroundColor: '#fcfcfc'
-            }}></div>
+            <div 
+              onClick={() => setViewingImage(promo.image)}
+              style={{
+                flex: 1,
+                backgroundImage: `url(${promo.image})`,
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundOrigin: 'content-box',
+                padding: '1rem',
+                backgroundColor: '#fcfcfc',
+                cursor: 'zoom-in'
+              }}
+            ></div>
             
             {/* Dots inside slide but above content */}
             <div style={{
@@ -92,9 +95,9 @@ const PromoCarousel = () => {
               <button 
                 className="btn-primary" 
                 onClick={() => handleQuote(promo)}
-                style={{ width: '100%', fontSize: '0.9rem', padding: '0.8rem' }}
+                style={{ width: '100%', fontSize: '0.9rem', padding: '0.8rem', fontWeight: 900 }}
               >
-                COTIZAR
+                MÁS INFORMACIÓN
               </button>
             </div>
           </div>

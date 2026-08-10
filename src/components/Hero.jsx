@@ -9,10 +9,10 @@ const Hero = () => {
       <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
         <div style={{ zIndex: 2 }}>
           <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 900, lineHeight: 1.1, marginBottom: '1.5rem' }}>
-            Tecnología y Seguridad al <span style={{ color: 'var(--primary)' }}>Mejor Precio</span>
+            Expertos en <span style={{ color: 'var(--primary)' }}>Cámaras de Seguridad</span> y Laptops
           </h1>
           <p style={{ fontSize: '1.1rem', color: '#aaa', marginBottom: '2.5rem', maxWidth: '500px' }}>
-            Laptops de las mejores marcas y kits de cámaras de seguridad para tu hogar o negocio.
+            VeliYoth Store: Especialistas en seguridad electrónica, kits de cámaras CCTV y laptops de alto rendimiento para ingeniería y gaming en todo el Perú.
           </p>
           <div className="hero-actions">
             <button 
@@ -73,7 +73,7 @@ const Hero = () => {
           }}></div>
           <img 
             src={data.heroImage} 
-            alt="Featured Product" 
+            alt="VeliYoth Store - Cámaras de Seguridad y Tecnología" 
             style={{ width: '100%', height: 'auto', borderRadius: '12px' }} 
           />
         </div>

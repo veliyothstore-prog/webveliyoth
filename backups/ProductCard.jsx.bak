@@ -1,24 +1,9 @@
 import React, { memo } from 'react';
 import { useStore } from '../context/StoreContext';
-import { useNavigate } from 'react-router-dom';
 
 const ProductCard = memo(({ product }) => {
   const { setSelectedProduct } = useStore();
-  const navigate = useNavigate();
   const isOutOfStock = product.stock <= 0;
-
-  const handleInteraction = () => {
-    if (window.innerWidth < 768) {
-      navigate(`/product/${product.id}`);
-    } else {
-      setSelectedProduct(product);
-    }
-  };
-
-  const handleBtnClick = (e) => {
-    e.stopPropagation();
-    handleInteraction();
-  };
 
   return (
     <div style={{
@@ -33,7 +18,7 @@ const ProductCard = memo(({ product }) => {
       cursor: 'pointer'
     }}
     className="product-card-container"
-    onClick={handleInteraction}
+    onClick={() => setSelectedProduct(product)}
     >
       <div style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
         <img 
@@ -60,7 +45,7 @@ const ProductCard = memo(({ product }) => {
 
         <div style={{ marginTop: 'auto', paddingTop: '1.2rem' }}>
           <button 
-            onClick={handleBtnClick}
+            onClick={() => setSelectedProduct(product)}
             className="btn-card-main"
           >
             VER DETALLES

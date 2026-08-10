@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://webveliyoth.vercel.app/sitemap.xml

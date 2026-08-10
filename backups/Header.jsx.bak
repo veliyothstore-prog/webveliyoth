@@ -1,10 +1,8 @@
 import React from 'react';
 import { useStore } from '../context/StoreContext';
-import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const { setActiveCategory, setIsAdminOpen } = useStore();
-  const navigate = useNavigate();
 
   React.useEffect(() => {
     const handleOpen = () => setIsAdminOpen(true);
@@ -12,18 +10,13 @@ const Header = () => {
     return () => window.removeEventListener('open-admin', handleOpen);
   }, [setIsAdminOpen]);
 
-  const handleLogoClick = () => {
-    setActiveCategory('all');
-    navigate('/');
-  };
-
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
       {/* Top Bar with Logo */}
       <div style={{ background: 'var(--bg-dark)', borderBottom: '1px solid #333' }}>
         <div className="container flex justify-between items-center" style={{ height: '80px' }}>
           <div 
-            onClick={handleLogoClick}
+            onClick={() => setActiveCategory('all')}
             style={{ 
               background: 'var(--primary)', 
               height: '100%', 

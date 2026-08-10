@@ -11,31 +11,25 @@ import ImageLightbox from './components/ImageLightbox';
 import CartFloat from './components/CartFloat';
 import CartModal from './components/CartModal';
 import { Toaster } from 'react-hot-toast';
-import { HashRouter, Routes, Route } from 'react-router-dom';
-import ProductPage from './components/ProductPage';
 
 function StoreApp() {
   const { isAdminOpen } = useStore();
   const [isCartOpen, setIsCartOpen] = React.useState(false);
 
+  React.useEffect(() => {
+    document.title = "VeliYoth Store | Seguridad Electrónica y Tecnología de Vanguardia";
+  }, []);
+
   return (
     <div className="app-container">
-      <Routes>
-        <Route path="/" element={
-          <>
-            <Header />
-            <main>
-              <Hero />
-              <MainContent />
-            </main>
-            <Footer />
-            <ProductModal />
-          </>
-        } />
-        <Route path="/product/:id" element={<ProductPage />} />
-      </Routes>
-
-      {/* Overlays shared across all routes */}
+      <Header />
+      <main>
+        <Hero />
+        <MainContent />
+      </main>
+      <Footer />
+      <ProductModal />
+      {/* Carga condicional segura */}
       {isAdminOpen && <AdminPanel />}
       <WhatsAppFloat />
       <ImageLightbox />
@@ -47,12 +41,10 @@ function StoreApp() {
 
 function App() {
   return (
-    <HashRouter>
-      <StoreProvider>
-        <Toaster position="top-right" reverseOrder={false} />
-        <StoreApp />
-      </StoreProvider>
-    </HashRouter>
+    <StoreProvider>
+      <Toaster position="top-right" reverseOrder={false} />
+      <StoreApp />
+    </StoreProvider>
   );
 }
 
