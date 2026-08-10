@@ -23,7 +23,7 @@ const AdminPanel = () => {
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [isAddingUser, setIsAddingUser] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
-  const [newProduct, setNewProduct] = useState({ id: '', title: '', price: '', stock: '', image: '', brand: '', category: '', type: '', details: '' });
+  const [newProduct, setNewProduct] = useState({ id: '', title: '', price: '', stock: '', image: '', brand: '', category: '', type: '', details: '', showPdfDetails: false });
   const [uploading, setUploading] = useState(false);
   const [newCatName, setNewCatName] = useState('');
   const [newBrandName, setNewBrandName] = useState('');
@@ -118,7 +118,8 @@ const AdminPanel = () => {
         productToSave.details = {
           type: productToSave.type || '',
           brand: brandName,
-          description: rawDescription // el texto del textarea
+          description: rawDescription,
+          showPdfDetails: productToSave.showPdfDetails !== undefined ? productToSave.showPdfDetails : (editingProduct.details?.showPdfDetails || false)
         };
 
         await updateProduct(editingProduct.id, productToSave);
@@ -130,13 +131,14 @@ const AdminPanel = () => {
         productToSave.details = {
           type: productToSave.type || '',
           brand: brandName,
-          description: rawDescription
+          description: rawDescription,
+          showPdfDetails: productToSave.showPdfDetails || false
         };
 
         await addProduct(productToSave);
         toast.success('Creado');
         setIsAddingProduct(false);
-        setNewProduct({ id: '', title: '', price: '', stock: '', image: '', brand: '', category: '', type: '', details: '' });
+        setNewProduct({ id: '', title: '', price: '', stock: '', image: '', brand: '', category: '', type: '', details: '', showPdfDetails: false });
       }
     } catch (err) {
       console.error(err);
@@ -893,6 +895,15 @@ const AdminPanel = () => {
                   placeholder="Detalles técnicos del producto..."
                   style={{ width: '100%', padding: '0.8rem', borderRadius: '4px', border: '1px solid #ddd', minHeight: '120px', fontFamily: 'monospace', fontSize: '0.85rem' }}
                 />
+                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.8rem', fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer', color: '#1e293b' }}>
+                  <input 
+                    type="checkbox" 
+                    checked={editingProduct ? (editingProduct.showPdfDetails !== undefined ? editingProduct.showPdfDetails : (editingProduct.details?.showPdfDetails || false)) : newProduct.showPdfDetails} 
+                    onChange={(e) => editingProduct ? setEditingProduct({...editingProduct, showPdfDetails: e.target.checked}) : setNewProduct({...newProduct, showPdfDetails: e.target.checked})} 
+                    style={{ width: '18px', height: '18px', accentColor: 'var(--primary)' }}
+                  />
+                  Mostrar esta descripción en las cotizaciones PDF
+                </label>
               </div>
 
               <div style={{ marginBottom: '1.5rem' }}>

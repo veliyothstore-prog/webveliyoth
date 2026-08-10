@@ -64,13 +64,32 @@ export const generateProfessionalPDF = async (items, customerData, isPreview = f
     doc.text(`Teléfono: ${customerData.phone || 'No especificado'}`, 10, 72);
 
     // Tabla de Productos
-    const tableBody = productList.map((item, idx) => [
-      idx + 1,
-      item.title.toUpperCase(),
-      item.quantity || 1,
-      `S/ ${Number(item.price).toFixed(2)}`,
-      `S/ ${(Number(item.price) * (item.quantity || 1)).toFixed(2)}`
-    ]);
+    const tableBody = productList.map((item, idx) => {
+      let desc = item.title.toUpperCase();
+      let rawDescription = item.details;
+      let showPdfDetails = false;
+
+      // Extract rawDescription and showPdfDetails if it's an object
+      while (typeof rawDescription === 'object' && rawDescription !== null) {
+        showPdfDetails = showPdfDetails || rawDescription.showPdfDetails === true;
+        rawDescription = rawDescription.description || '';
+      }
+
+      // Check if it's a kit or has the flag
+      const isKit = item.title.toUpperCase().includes('KIT');
+      
+      if ((isKit || showPdfDetails) && rawDescription && rawDescription.trim().length > 0) {
+         desc += `\n\n${rawDescription.trim()}`;
+      }
+
+      return [
+        idx + 1,
+        desc,
+        item.quantity || 1,
+        `S/ ${Number(item.price).toFixed(2)}`,
+        `S/ ${(Number(item.price) * (item.quantity || 1)).toFixed(2)}`
+      ];
+    });
 
     const total = productList.reduce((acc, item) => acc + (Number(item.price) * (item.quantity || 1)), 0);
 
