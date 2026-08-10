@@ -529,9 +529,13 @@ const AdminPanel = () => {
                                   let pdfItems = [];
                                   if (ord.product_id === 'MULTI') {
                                     const items = await getQuoteItems(ord.reference);
-                                    pdfItems = items.map(it => ({ ...it, title: it.product_title }));
+                                    pdfItems = items.map(it => {
+                                      const prod = data.products.find(p => String(p.id) === String(it.product_id));
+                                      return { ...it, title: it.product_title, details: prod?.details };
+                                    });
                                   } else {
-                                    pdfItems = [{ ...ord, title: ord.product_title }];
+                                    const prod = data.products.find(p => String(p.id) === String(ord.product_id));
+                                    pdfItems = [{ ...ord, title: ord.product_title, details: prod?.details }];
                                   }
 
                                   const blob = await generateProfessionalPDF(pdfItems, { name: info?.name, phone: info?.phone, reference: ord.reference, commercialConditions: data.commercialConditions, output: 'blob' });
@@ -665,7 +669,10 @@ const AdminPanel = () => {
                                 <button onClick={async () => {
                                   toast.loading('Generando vista previa...', { id: 'pdf-prev' });
                                   const items = await getQuoteItems(q.reference);
-                                  const blob = await generateProfessionalPDF(items.map(it => ({ ...it, title: it.product_title })), { name: info?.name, phone: info?.phone, reference: q.reference, commercialConditions: data.commercialConditions, output: 'blob' });
+                                  const blob = await generateProfessionalPDF(items.map(it => {
+                                    const prod = data.products.find(p => String(p.id) === String(it.product_id));
+                                    return { ...it, title: it.product_title, details: prod?.details };
+                                  }), { name: info?.name, phone: info?.phone, reference: q.reference, commercialConditions: data.commercialConditions, output: 'blob' });
                                   if (blob) {
                                     setPreviewPdf(URL.createObjectURL(blob));
                                     toast.success('Listo', { id: 'pdf-prev' });
@@ -754,7 +761,10 @@ const AdminPanel = () => {
                            <button onClick={() => handleViewItems(q)} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '0.4rem 0.8rem', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 800 }}>VER DETALLE 👁️</button>
                           <button onClick={async () => {
                             const items = await getQuoteItems(q.reference);
-                            generateProfessionalPDF(items.map(it => ({ ...it, title: it.product_title })), { name: info?.name, phone: info?.phone, reference: q.reference, commercialConditions: data.commercialConditions });
+                            generateProfessionalPDF(items.map(it => {
+                              const prod = data.products.find(p => String(p.id) === String(it.product_id));
+                              return { ...it, title: it.product_title, details: prod?.details };
+                            }), { name: info?.name, phone: info?.phone, reference: q.reference, commercialConditions: data.commercialConditions });
                           }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.1rem' }}>📄</button>
                           <button onClick={() => { if(window.confirm('¿Eliminar?')) deleteQuote(q.id).then(fetchQuotes) }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.1rem', color: '#cbd5e1' }}>🗑️</button>
                         </div>
