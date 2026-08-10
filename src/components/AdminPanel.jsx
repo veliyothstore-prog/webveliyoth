@@ -531,11 +531,11 @@ const AdminPanel = () => {
                                     const items = await getQuoteItems(ord.reference);
                                     pdfItems = items.map(it => {
                                       const prod = data.products.find(p => String(p.id) === String(it.product_id));
-                                      return { ...it, title: it.product_title, details: prod?.details };
+                                      return { ...it, title: it.product_title, details: prod?.details, image: prod?.image };
                                     });
                                   } else {
                                     const prod = data.products.find(p => String(p.id) === String(ord.product_id));
-                                    pdfItems = [{ ...ord, title: ord.product_title, details: prod?.details }];
+                                    pdfItems = [{ ...ord, title: ord.product_title, details: prod?.details, image: prod?.image }];
                                   }
 
                                   const blob = await generateProfessionalPDF(pdfItems, { name: info?.name, phone: info?.phone, reference: ord.reference, commercialConditions: data.commercialConditions, output: 'blob' });
@@ -671,7 +671,7 @@ const AdminPanel = () => {
                                   const items = await getQuoteItems(q.reference);
                                   const blob = await generateProfessionalPDF(items.map(it => {
                                     const prod = data.products.find(p => String(p.id) === String(it.product_id));
-                                    return { ...it, title: it.product_title, details: prod?.details };
+                                    return { ...it, title: it.product_title, details: prod?.details, image: prod?.image };
                                   }), { name: info?.name, phone: info?.phone, reference: q.reference, commercialConditions: data.commercialConditions, output: 'blob' });
                                   if (blob) {
                                     setPreviewPdf(URL.createObjectURL(blob));
@@ -763,7 +763,7 @@ const AdminPanel = () => {
                             const items = await getQuoteItems(q.reference);
                             generateProfessionalPDF(items.map(it => {
                               const prod = data.products.find(p => String(p.id) === String(it.product_id));
-                              return { ...it, title: it.product_title, details: prod?.details };
+                              return { ...it, title: it.product_title, details: prod?.details, image: prod?.image };
                             }), { name: info?.name, phone: info?.phone, reference: q.reference, commercialConditions: data.commercialConditions });
                           }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.1rem' }}>📄</button>
                           <button onClick={() => { if(window.confirm('¿Eliminar?')) deleteQuote(q.id).then(fetchQuotes) }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.1rem', color: '#cbd5e1' }}>🗑️</button>

@@ -16,15 +16,33 @@ export const generateProfessionalPDF = async (items, customerData, isPreview = f
         img.src = url;
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          canvas.width = img.width;
-          canvas.height = img.height;
+          const MAX_SIZE = 300; // Resize to avoid huge base64 strings
+          let width = img.width;
+          let height = img.height;
+          
+          if (width > height && width > MAX_SIZE) {
+            height *= MAX_SIZE / width;
+            width = MAX_SIZE;
+          } else if (height > MAX_SIZE) {
+            width *= MAX_SIZE / height;
+            height = MAX_SIZE;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
           const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0);
+          ctx.drawImage(img, 0, 0, width, height);
           resolve(canvas.toDataURL('image/jpeg', 0.8));
         };
         img.onerror = () => resolve(null);
       });
     };
+
+    // Pre-cargar todas las imágenes de los productos
+    const imagesBase64 = await Promise.all(productList.map(async (item) => {
+      if (item.image) return await loadImage(item.image);
+      return null;
+    }));
 
     // Cabecera Corporativa
     doc.setFillColor(255, 222, 0); // Amarillo Veliyoth
@@ -84,6 +102,7 @@ export const generateProfessionalPDF = async (items, customerData, isPreview = f
 
       return [
         idx + 1,
+        '', // Espacio para la imagen
         desc,
         item.quantity || 1,
         `S/ ${Number(item.price).toFixed(2)}`,
@@ -95,17 +114,29 @@ export const generateProfessionalPDF = async (items, customerData, isPreview = f
 
     autoTable(doc, {
       startY: 85,
-      head: [['ITEM', 'DESCRIPCIÓN DEL PRODUCTO', 'CANT', 'P. UNIT', 'SUBTOTAL']],
+      head: [['ITEM', 'IMG', 'DESCRIPCIÓN DEL PRODUCTO', 'CANT', 'P. UNIT', 'SUBTOTAL']],
       body: tableBody,
       theme: 'grid',
       headStyles: { fillColor: [30, 41, 59], fontSize: 9, halign: 'center', textColor: [255, 222, 0] },
       styles: { fontSize: 8, cellPadding: 4, valign: 'middle' },
       columnStyles: { 
         0: { halign: 'center', width: 12 }, 
-        1: { width: 95 }, 
-        2: { halign: 'center', width: 15 },
-        3: { halign: 'right', width: 25 },
-        4: { halign: 'right', width: 30 }
+        1: { halign: 'center', width: 18, minCellHeight: 18 }, // Columna imagen
+        2: { width: 90 }, 
+        3: { halign: 'center', width: 15 },
+        4: { halign: 'right', width: 25 },
+        5: { halign: 'right', width: 30 }
+      },
+      didDrawCell: function (data) {
+        // Dibujar imagen si existe y estamos en la columna IMG (índice 1) del body
+        if (data.section === 'body' && data.column.index === 1 && imagesBase64[data.row.index]) {
+          const imgBase64 = imagesBase64[data.row.index];
+          const imgSize = 14; // Tamaño de la imagen (14x14 mm)
+          // Centrar la imagen en la celda
+          const x = data.cell.x + (data.cell.width - imgSize) / 2;
+          const y = data.cell.y + (data.cell.height - imgSize) / 2;
+          doc.addImage(imgBase64, 'JPEG', x, y, imgSize, imgSize);
+        }
       }
     });
 
