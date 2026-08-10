@@ -107,13 +107,18 @@ const AdminPanel = () => {
       productToSave.price = parseFloat(productToSave.price);
       productToSave.stock = parseInt(productToSave.stock);
 
+      let rawDescription = productToSave.details;
+      while (typeof rawDescription === 'object' && rawDescription !== null) {
+        rawDescription = rawDescription.description || '';
+      }
+
       if (editingProduct) {
         // Estructura exacta solicitada por el usuario para el campo 'details'
         const brandName = data.brands.find(b => b.id === productToSave.brand)?.name || productToSave.brand;
         productToSave.details = {
           type: productToSave.type || '',
           brand: brandName,
-          description: productToSave.details // el texto del textarea
+          description: rawDescription // el texto del textarea
         };
 
         await updateProduct(editingProduct.id, productToSave);
@@ -125,7 +130,7 @@ const AdminPanel = () => {
         productToSave.details = {
           type: productToSave.type || '',
           brand: brandName,
-          description: productToSave.details
+          description: rawDescription
         };
 
         await addProduct(productToSave);
@@ -863,10 +868,11 @@ const AdminPanel = () => {
                 <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, marginBottom: '0.5rem' }}>DESCRIPCIÓN / DETALLES</label>
                 <textarea 
                   value={(() => {
-                    const val = editingProduct ? editingProduct.details : newProduct.details;
-                    if (!val) return '';
-                    if (typeof val === 'object') return val.description || '';
-                    return val;
+                    let val = editingProduct ? editingProduct.details : newProduct.details;
+                    while (typeof val === 'object' && val !== null) {
+                        val = val.description || '';
+                    }
+                    return val || '';
                   })()} 
                   onChange={(e) => editingProduct ? setEditingProduct({...editingProduct, details: e.target.value}) : setNewProduct({...newProduct, details: e.target.value})} 
                   placeholder="Detalles técnicos del producto..."
