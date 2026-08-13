@@ -116,12 +116,39 @@ const ProductModal = () => {
               S/ {Math.round(selectedProduct.price).toLocaleString()}
             </div>
 
-            <div style={{ flex: 1 }}>
-              <h3 style={{ fontSize: '0.85rem', fontWeight: 800, color: '#475569', marginBottom: '0.8rem', textTransform: 'uppercase' }}>Descripción</h3>
-              <p style={{ fontSize: '0.9rem', color: '#475569', lineHeight: '1.7', whiteSpace: 'pre-line' }}>
-                {typeof selectedProduct.details === 'object' ? selectedProduct.details.description : selectedProduct.details || 'Sin descripción disponible.'}
-              </p>
-            </div>
+            {(() => {
+              const extractDescription = (details) => {
+                if (!details) return null;
+                let current = details;
+                if (typeof current === 'string') {
+                  if (current.trim().startsWith('{')) {
+                    try { current = JSON.parse(current); } catch (e) {}
+                  } else {
+                    return current;
+                  }
+                }
+                while (current && typeof current === 'object') {
+                  if (current.description !== undefined) {
+                    current = current.description;
+                  } else {
+                    break;
+                  }
+                }
+                return (typeof current === 'string' && current.trim() !== '') ? current : null;
+              };
+
+              const desc = extractDescription(selectedProduct.details);
+              if (!desc) return null;
+
+              return (
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ fontSize: '0.85rem', fontWeight: 800, color: '#475569', marginBottom: '0.8rem', textTransform: 'uppercase' }}>Descripción</h3>
+                  <p style={{ fontSize: '0.9rem', color: '#475569', lineHeight: '1.7', whiteSpace: 'pre-line' }}>
+                    {desc}
+                  </p>
+                </div>
+              );
+            })()}
 
             <div style={{ background: '#f8fafc', padding: '1.5rem', borderRadius: '12px', border: '1px solid #e2e8f0', marginTop: 'auto' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>

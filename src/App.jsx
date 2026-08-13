@@ -1,3 +1,4 @@
+// Invalidate cache
 import React from 'react';
 import { StoreProvider, useStore } from './context/StoreContext';
 import Header from './components/Header';

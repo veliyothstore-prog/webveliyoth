@@ -131,12 +131,39 @@ const ProductPage = () => {
               </button>
             </div>
 
-            <div style={{ padding: '1rem 0' }}>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, marginBottom: '1rem' }}>Descripción</h3>
-              <div style={{ color: '#475569', lineHeight: 1.8, fontSize: '1rem', whiteSpace: 'pre-line' }}>
-                {typeof product.details === 'object' ? product.details.description : product.details}
-              </div>
-            </div>
+            {(() => {
+              const extractDescription = (details) => {
+                if (!details) return null;
+                let current = details;
+                if (typeof current === 'string') {
+                  if (current.trim().startsWith('{')) {
+                    try { current = JSON.parse(current); } catch (e) {}
+                  } else {
+                    return current;
+                  }
+                }
+                while (current && typeof current === 'object') {
+                  if (current.description !== undefined) {
+                    current = current.description;
+                  } else {
+                    break;
+                  }
+                }
+                return (typeof current === 'string' && current.trim() !== '') ? current : null;
+              };
+
+              const desc = extractDescription(product.details);
+              if (!desc) return null;
+
+              return (
+                <div style={{ padding: '1rem 0' }}>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, marginBottom: '1rem' }}>Descripción</h3>
+                  <div style={{ color: '#475569', lineHeight: 1.8, fontSize: '1rem', whiteSpace: 'pre-line' }}>
+                    {desc}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </div>
       </main>
